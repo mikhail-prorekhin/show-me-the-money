@@ -34,8 +34,12 @@ The API is implemented in Python and deployed using AWS Lambda and API Gateway.<
 1. After deploying the Xero service, copy the API URL.
 2. Set Api url in <b>show_me_the_money_aws_be/terraform/variables.tf</b> file<br>
    - <b>xero_api_url</b> - Replace with your deployed stage URL (e.g., http://your.url.api-southeast-2.elb.amazonaws.com/api.xro/2.0).
-3. Deploy the backend service using Terraform:
-
+3. Install a depeddency
+```
+cd show_me_the_money_aws_be/src
+pip install requests -t .
+```
+4. Deploy the backend service using Terraform:
 ```
 cd show_me_the_money_aws_be/terraform
 terraform init
