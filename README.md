@@ -3,26 +3,23 @@
 ## About
 
 Hi there,<br>
-I would like to present a small chalemge task for DemystData,
-please see [the requarentmens](https://github.com/DemystData/code-drills/tree/main/show-me-the-money)<br>
-This solution is targeting to run on AWS enviriment using S3 buckets, Lambda + API gateway protected a key api and EKS with Load balancer
-You also can see another chalemge task which does not requare AWS and mostly demontrates authentication.
-
+This repository contains a small challenge task designed for DemystData. You can find the original requirements [here](https://github.com/DemystData/code-drills/tree/main/show-me-the-money)<br>
+The solution is built to run in an AWS environment utilizing services like S3 buckets, Lambda, API Gateway (secured by an API key), and EKS with a Load Balancer.
 ## Build and deploy
 
 ### Enviroment settings
 
-To run deploy/undeploy scripts, please enchure You had set neccesary variables
+Before running the deployment or teardown scripts, ensure you have set the necessary AWS environment variables:
 
 ```
-export AWS_ACCESS_KEY_ID=<Yoour key id>
-export AWS_SECRET_ACCESS_KEY=<Your access key>
-export AWS_DEFAULT_REGION=<Your region>
+export AWS_ACCESS_KEY_ID=<Your Key ID>
+export AWS_SECRET_ACCESS_KEY=<Your Secret Access Key>
+export AWS_DEFAULT_REGION=<Your Region>
 ```
 
 ### Xero image
 
-To run test service [image](https://github.com/DemystData/code-drills/tree/main/show-me-the-money) you can use AWS EKS <br>
+To run the test service ([Xero stub](https://github.com/DemystData/code-drills/tree/main/show-me-the-money)), you can deploy it on AWS EKS.<br>
 
 ```
 cd show_me_the_money_aws_be/stub-k8s
@@ -32,12 +29,12 @@ kubectl apply  -f show-me-the-money-stub.yaml
 
 ### Backend Service
 
-Api is imlemented on Python and deployed AWS Lambda and API Gateway<br>
+The API is implemented in Python and deployed using AWS Lambda and API Gateway.<br>
 
-1. Copy Your Xero service API What You just deployed
+1. After deploying the Xero service, copy the API URL.
 2. Set Api url in <b>show_me_the_money_aws_be/terraform/variables.tf</b> file<br>
-   <b>xero_api_url</b> - your stage deploy, for example <i>http://your.url.api-southeast-2.elb.amazonaws.com/api.xro/2.0</i>
-3. Run deploy script
+   - <b>xero_api_url</b> - Replace with your deployed stage URL (e.g., http://your.url.api-southeast-2.elb.amazonaws.com/api.xro/2.0).
+3. Deploy the backend service using Terraform:
 
 ```
 cd show_me_the_money_aws_be/terraform
@@ -47,13 +44,13 @@ ferraform apply
 
 ### Web page
 
-The static web page inplemented as a single page application using React<br>
+The static web page is a single-page application (SPA) implemented in React.<br>
 
-1. Copy Your API deployed stage url (as ip printed on previous step) and api key.
-2. Set Api url and key id in <b>show_me_the_money_aws_fe/src/constants/api.ts</b> file<br>
-   <b>apiURL</b> - your stage deploy, for example <i>http://your.url.xxxxxx.amazonaws.com/dev</i><br>
-   <b>apiKey</b> - your generated api key
-3. Make a build
+1. After deploying the backend, copy the API URL and the generated API key.
+2. Update the <b>show_me_the_money_aws_fe/src/constants/api.ts</b> file:
+   - <b>apiURL</b>: Your backend stage URL (e.g., http://your.url.xxxxxx.amazonaws.com/dev).
+   - <b>apiKey</b>: Your generated API key.
+3. Build the frontend:
 
 ```
 cd show_me_the_money_aws_fe
@@ -61,7 +58,7 @@ npm i
 npm run build
 ```
 
-4. Run deploy script
+4. Deploy the frontend using Terraform:
 
 ```
 cd show_me_the_money_aws_fe/terraform
@@ -71,22 +68,21 @@ ferraform apply
 
 ### Undeploy
 
-1. Undeploy web page
+To tear down the solution:
 
+1. Undeploy the web application:
 ```
 cd show_me_the_money_aws_fe/terraform
 ferraform destroy
 ```
 
-2. Delete api
-
+2. Undeploy the backend API:
 ```
 cd show_me_the_money_aws_be/terraform
 ferraform destroy
 ```
 
-3. Delete k8s
-
+3. Delete the Xero stub service and EKS cluster:
 ```
 cd show_me_the_money_aws_be/stub-k8s
 kubectl delete   -f show-me-the-money-stub.yaml
