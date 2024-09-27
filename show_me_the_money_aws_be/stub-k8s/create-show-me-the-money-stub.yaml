@@ -1,0 +1,11 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: show-me-the-money-cluster
+  region: ap-southeast-2
+
+nodeGroups:
+  - name: worker-nodes-group-1
+    instanceType: a1.medium
+    desiredCapacity: 1
